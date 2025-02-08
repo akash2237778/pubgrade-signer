@@ -34,9 +34,9 @@ jobs:
 
     - name: Decrypt Docker signing key
       run: |
-        echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > signing-key.enc
+        echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > signing-key.key
         chmod 600 signing-key.key
-        docker trust key load signing-key.enc << EOF
+        docker trust key load signing-key.key << EOF
         ${{ secrets.DOCKER_PRIVATE_KEY_PASSPHRASE }}
         EOF
     
