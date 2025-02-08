@@ -35,8 +35,10 @@ jobs:
     - name: Decrypt Docker signing key
       run: |
         echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > signing-key.enc
-        echo "${{ secrets.DOCKER_PRIVATE_KEY_PASSPHRASE }}" | openssl aes-256-cbc -d -in signing-key.enc -out signing-key.key -pass stdin
         chmod 600 signing-key.key
+        docker trust key load signing-key.enc << EOF
+        ${{ secrets.DOCKER_PRIVATE_KEY_PASSPHRASE }}
+        EOF
     
     - name: Import Docker signing key
       run: |
