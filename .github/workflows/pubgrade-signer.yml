@@ -25,12 +25,20 @@ jobs:
         username: ${{ github.event.client_payload.docker_username }}
         password: ${{ github.event.client_payload.docker_password }}
 
-
+    - name: Enable Docker Content Trust
+      run: |
+        echo '{"DOCKER_CONTENT_TRUST": "1"}' >> $GITHUB_ENV
+          
     - name: Pull Image
       run: docker pull ${{ github.event.client_payload.pull_tag }}
       
     - name: Tag changed
       run: docker tag ${{ github.event.client_payload.pull_tag }} ${{ github.event.client_payload.push_tag }}
+
+    - name: Sign and Push Docker Image with DCT
+      run: |
+          # Push the signed image
+          docker push ${{ github.event.client_payload.push_tag }}
       
     - name: Sign and push docker image
       uses: sudo-bot/action-docker-sign@latest
