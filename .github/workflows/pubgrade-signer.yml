@@ -32,29 +32,29 @@ jobs:
       run: echo "DOCKER_CONTENT_TRUST=1" >> $GITHUB_ENV
 
 
-    - name: Install Notary CLI
-      run: |
-        sudo apt-get install -y notary
+    # - name: Install Notary CLI
+    #   run: |
+    #     sudo apt-get install -y notary
 
-    - name: Decrypt and Import Signing Key
-      run: |
-        echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > signing-key.key
-        chmod 600 signing-key.key
-        notary key import signing-key.key --role targets/releases
-
-
-    - name: Add Delegation Key
-      run: |
-        notary delegation add docker.io/akash7778/sampleapp targets/releases signing-key.key
-        notary publish docker.io/akash7778/sampleapp
-
-    # - name: Decrypt and Import Docker signing key
+    # - name: Decrypt and Import Signing Key
     #   run: |
     #     echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > signing-key.key
     #     chmod 600 signing-key.key
-    #     docker trust key load signing-key.key << EOF
-    #     ${{ secrets.DOCKER_PRIVATE_KEY_PASSPHRASE }}
-    #     EOF
+    #     notary key import signing-key.key --role targets/releases
+
+
+    # - name: Add Delegation Key
+    #   run: |
+    #     notary delegation add docker.io/akash7778/sampleapp targets/releases signing-key.key
+    #     notary publish docker.io/akash7778/sampleapp
+
+    - name: Decrypt and Import Docker signing key
+      run: |
+        echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > signing-key.key
+        chmod 600 signing-key.key
+        docker trust key load signing-key.key << EOF
+        ${{ secrets.DOCKER_PRIVATE_KEY_PASSPHRASE }}
+        EOF
     
     - name: Tag changed
       run: docker tag ${{ github.event.client_payload.pull_tag }} ${{ github.event.client_payload.push_tag }}
