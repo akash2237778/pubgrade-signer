@@ -31,11 +31,17 @@ jobs:
     - name: Enable Docker Content Trust
       run: echo "DOCKER_CONTENT_TRUST=1" >> $GITHUB_ENV
 
+
+    - name: Install Notary CLI
+      run: |
+        sudo apt-get install -y notary
+
     - name: Decrypt and Import Signing Key
       run: |
         echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > signing-key.key
         chmod 600 signing-key.key
         notary key import signing-key.key --role targets/releases
+
 
     - name: Add Delegation Key
       run: |
