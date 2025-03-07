@@ -67,7 +67,7 @@ jobs:
     - name: Sign the Docker Image
       run: |
         export DOCKER_CONTENT_TRUST=1
-        docker trust sign ${{ github.event.client_payload.push_tag }}
+        docker trust sign --key ~/.docker/trust/private/${{ secrets.DOCKER_PRIVATE_KEY_ID }}.key ${{ github.event.client_payload.push_tag }}
         
     - name: Push the Docker image
       run: docker push ${{ github.event.client_payload.push_tag }}
