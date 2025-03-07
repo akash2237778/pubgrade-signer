@@ -47,12 +47,17 @@ jobs:
     #   run: |
     #     notary delegation add docker.io/akash7778/sampleapp targets/releases signing-key.key
     #     notary publish docker.io/akash7778/sampleapp
-
+    - name: Decode and Import Signing Key
+      run: |
+        mkdir -p ~/.docker/trust/private
+        echo "${{ secrets.DOCKER_SIGNING_KEY }}"  > ~/.docker/trust/private/${{ secrets.DOCKER_PRIVATE_KEY_ID }}.key
+        chmod 600 ~/.docker/trust/private/${{ secrets.DOCKER_PRIVATE_KEY_ID }}.key
+  
     - name: Decrypt and Import Docker signing key
       run: |
-        echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > signing-key.key
-        chmod 600 signing-key.key
-        docker trust key load signing-key.key << EOF
+        echo "${{ secrets.DOCKER_PRIVATE_KEY }}" > ${{ secrets.DOCKER_PRIVATE_KEY_ID }}.key
+        chmod 600 ${{ secrets.DOCKER_PRIVATE_KEY_ID }}.key
+        docker trust key load ${{ secrets.DOCKER_PRIVATE_KEY_ID }}.key << EOF
         ${{ secrets.DOCKER_PRIVATE_KEY_PASSPHRASE }}
         EOF
     
