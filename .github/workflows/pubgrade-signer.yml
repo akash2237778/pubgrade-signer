@@ -76,10 +76,10 @@ jobs:
         # Example: myPassw0rdChangeMeReplaceMe
         private-key-passphrase: ${{ secrets.DOCKER_PRIVATE_KEY_PASSPHRASE }}
         
-    - name: Sign the Docker Image
-      run: |
-        export DOCKER_CONTENT_TRUST=1
-        docker trust sign ${{ github.event.client_payload.push_tag }}
+    # - name: Sign the Docker Image
+    #   run: |
+    #     export DOCKER_CONTENT_TRUST=1
+    #     docker trust sign ${{ github.event.client_payload.push_tag }}
         
-    - name: Push the Docker image
-      run: docker push ${{ github.event.client_payload.push_tag }}
+    # - name: Push the Docker image
+    #   run: docker push ${{ github.event.client_payload.push_tag }}
