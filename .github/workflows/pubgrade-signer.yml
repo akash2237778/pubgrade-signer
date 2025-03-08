@@ -63,7 +63,19 @@ jobs:
     
     - name: Tag changed
       run: docker tag ${{ github.event.client_payload.pull_tag }} ${{ github.event.client_payload.push_tag }}
-      
+
+
+    - name: Sign and push docker image
+      uses: sudo-bot/action-docker-sign@latest
+      with:
+        image-ref: ${{ github.event.client_payload.push_tag }}
+        # Example: 51f9a39f3db4ddaaf9174fca69f41fb01a04a4dfb5125ef115feecb93d19efa6
+        private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
+        # The contents from: ~/.docker/trust/private/51f9a39f3db4ddaaf9174fca69f41fb01a04a4dfb5125ef115feecb93d19efa6.key)
+        private-key: ${{ secrets.DOCKER_PRIVATE_KEY }}
+        # Example: myPassw0rdChangeMeReplaceMe
+        private-key-passphrase: ${{ secrets.DOCKER_PRIVATE_KEY_PASSPHRASE }}
+        
     - name: Sign the Docker Image
       run: |
         export DOCKER_CONTENT_TRUST=1
