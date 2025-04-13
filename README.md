@@ -1,4 +1,4 @@
-# Docker Image Signing and CI/CD Trigger Guide
+# Docker Image Signing and Pubgrade Trigger Guide
 
 This guide outlines the steps to tag a Docker image, sign it with Docker Content Trust, manage keys, and trigger a pubgrade using a curl command.
 
