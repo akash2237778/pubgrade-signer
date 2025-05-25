@@ -58,6 +58,9 @@ jobs:
         run: |
           cosign sign --yes ${{ github.event.client_payload.push_tag }}
 
+      - name: Push Tagged Image
+        run: docker push ${{ github.event.client_payload.push_tag }}
+
       # - name: Push Tagged Image
       #   run: docker push $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
 
