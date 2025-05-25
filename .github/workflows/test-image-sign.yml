@@ -48,7 +48,7 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: "1"
         run: |
-          cosign sign --yes akash7778/sampletestt:${{ steps.get-digest.outputs.digest }}
+          cosign sign --yes akash7778/sampletestt@${{ steps.get-digest.outputs.digest }}
 
       - name: Push Tagged Image
         run: docker push ${{ github.event.client_payload.push_tag }}
