@@ -1,10 +1,10 @@
 name: Pubgrade
 
 
-on:
-  repository_dispatch:
-    types: [sign-image]  
-  workflow_dispatch:
+# on:
+#   repository_dispatch:
+#     types: [sign-image]  
+#   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
