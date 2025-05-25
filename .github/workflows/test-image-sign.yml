@@ -49,17 +49,17 @@ jobs:
           cosign-release: 'v2.2.1' # Use a specific version for stability
 
       - name: Tag changed
-        run: docker tag ${{ github.event.client_payload.pull_tag }} $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
+        run: docker tag ${{ github.event.client_payload.pull_tag }} ${{ github.event.client_payload.push_tag }}
 
           
       - name: Sign container image
         env:
           COSIGN_EXPERIMENTAL: "1"
         run: |
-          cosign sign --yes $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
+          cosign sign --yes ${{ github.event.client_payload.push_tag }}
 
-      - name: Push Tagged Image
-        run: docker push $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
+      # - name: Push Tagged Image
+      #   run: docker push $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
 
 
      # Output the digest for reference
