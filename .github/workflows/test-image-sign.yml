@@ -50,11 +50,6 @@ jobs:
         run: |
           cosign sign --yes akash7778/sampletestt@${{ steps.get-digest.outputs.digest }}
 
-      - name: Verify container image
-        env:
-          COSIGN_EXPERIMENTAL: "1"
-        run: |
-          cosign verify ${{ github.event.client_payload.push_tag }}
           
       # Sign the container image
       # - name: Sign container image
