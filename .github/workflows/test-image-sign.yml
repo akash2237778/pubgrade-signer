@@ -48,11 +48,26 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: "1"
         run: |
-          cosign sign --yes akash7778/sampletestt@${{ steps.get-digest.outputs.digest }}
+          cosign sign --yes akash7778/sampletestt:${{ steps.get-digest.outputs.digest }}
 
       - name: Push Tagged Image
         run: docker push ${{ github.event.client_payload.push_tag }}
-          
+
+
+
+      - name: Extract image name
+        run: |
+          IMAGE_TAG=${{ github.event.client_payload.push_tag }}
+          IMAGE_NAME=$(echo $IMAGE_TAG | sed 's/:.*//')
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+
+     # Output the digest for reference
+      - name: Output Digest for Verification
+        run: |
+          echo "Image pushed and signed as ${{ github.event.client_payload.push_tag }} with digest akash7778/sampletestt@${{ steps.get-digest.outputs.digest }}"
+          echo "Verify with: cosign verify $IMAGE_NAME:${{ steps.get-digest.outputs.digest }}"
+
+   
       # Sign the container image
       # - name: Sign container image
       #   env:
