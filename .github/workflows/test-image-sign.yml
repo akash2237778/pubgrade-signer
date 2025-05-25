@@ -50,6 +50,8 @@ jobs:
         run: |
           cosign sign --yes akash7778/sampletestt@${{ steps.get-digest.outputs.digest }}
 
+      - name: Push Tagged Image
+        run: docker push ${{ github.event.client_payload.push_tag }}
           
       # Sign the container image
       # - name: Sign container image
