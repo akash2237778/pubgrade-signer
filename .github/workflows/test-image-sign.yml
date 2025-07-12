@@ -64,16 +64,19 @@ jobs:
 
       # - name: Push Tagged Image
       #   run: docker push $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
-      - name: Sign image Verification
-        run: |
-          cosign verify $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
+
 
      # Output the digest for reference
       - name: Output Digest for Verification
         run: |
           echo "Image pushed and signed as ${{ github.event.client_payload.push_tag }} with digest akash7778/sampletestt@${{ steps.get-digest.outputs.digest }}"
           echo "Verify with: cosign verify $IMAGE_NAME:${{ steps.get-digest.outputs.digest }}"
-
+        
+      - name: Sign image Verification
+        env:
+            COSIGN_EXPERIMENTAL: "1"
+        run: |
+          cosign verify $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
    
       # Sign the container image
       # - name: Sign container image
