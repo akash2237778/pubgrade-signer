@@ -64,7 +64,9 @@ jobs:
 
       # - name: Push Tagged Image
       #   run: docker push $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
-
+      - name: Sign image Verification
+        run: |
+          cosign verify $IMAGE_NAME@${{ steps.get-digest.outputs.digest }}
 
      # Output the digest for reference
       - name: Output Digest for Verification
